@@ -1,0 +1,698 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+Applicant
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<h2>
+
+{{ application.application_number }}
+
+</h2>
+
+<hr>
+
+<div class="card mb-4">
+
+<div class="card-header bg-primary text-white">
+
+Applicant Profile
+
+</div>
+
+<div class="card-body">
+
+<div class="row">
+
+<div class="col-md-3">
+
+{% set passport = documents|selectattr("document_type","equalto","Passport Photo")|first %}
+
+{% if passport %}
+
+<img
+src="{{ url_for('static',
+filename='uploads/applicants/' ~ profile.id ~ '/' ~ passport.stored_filename) }}"
+class="img-fluid img-thumbnail">
+
+{% else %}
+
+<p>No Passport Photo</p>
+
+{% endif %}
+
+</div>
+
+<div class="col-md-9">
+
+<table class="table">
+
+<tr>
+
+<th>Name</th>
+
+<td>
+
+{{ profile.first_name }}
+
+{{ profile.last_name }}
+
+</td>
+
+</tr>
+
+<tr>
+
+<th>Gender</th>
+
+<td>{{ profile.gender }}</td>
+
+</tr>
+
+<tr>
+
+<th>Date of Birth</th>
+
+<td>{{ profile.date_of_birth }}</td>
+
+</tr>
+
+<tr>
+
+<th>National ID</th>
+
+<td>{{ profile.national_id }}</td>
+
+</tr>
+
+<tr>
+
+<th>Email</th>
+
+<td>{{ profile.user.email }}</td>
+
+</tr>
+
+<tr>
+
+<th>Phone</th>
+
+<td>{{ profile.phone }}</td>
+
+</tr>
+
+<tr>
+
+<th>County</th>
+
+<td>{{ profile.county }}</td>
+
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="card mb-4">
+
+<div class="card-header bg-info text-white">
+
+Education
+
+</div>
+
+<div class="card-body">
+
+<table class="table">
+
+<tr>
+
+<th>School</th>
+
+<td>{{ education.school_name }}</td>
+
+</tr>
+
+<tr>
+
+<th>KCSE Index</th>
+
+<td>{{ education.index_number }}</td>
+
+</tr>
+
+<tr>
+
+<th>Mean Grade</th>
+
+<td>{{ education.mean_grade }}</td>
+
+</tr>
+
+<tr>
+
+<th>Year</th>
+
+<td>{{ education.year_completed }}</td>
+
+</tr>
+
+</table>
+
+</div>
+
+</div>
+<div class="card mb-4">
+
+<div class="card-header bg-success text-white">
+
+Application
+
+</div>
+
+<div class="card-body">
+
+<table class="table">
+
+<tr>
+
+<th>Department</th>
+
+<td>{{ application.department.name }}</td>
+
+</tr>
+
+<tr>
+
+<th>Course</th>
+
+<td>{{ application.course.name }}</td>
+
+</tr>
+
+<tr>
+
+<th>Status</th>
+
+<td>
+
+<span class="badge bg-primary">
+
+{{ application.status }}
+
+</span>
+
+</td>
+
+</tr>
+
+<tr>
+
+<th>Date Submitted</th>
+
+<td>{{ application.created_at }}</td>
+
+<td>
+{% if application.admission_letter %}
+
+<a
+    href="{{ url_for('admissions.view_letter',
+                     id=application.admission_letter.id) }}"
+    class="btn btn-success"
+    target="_blank">
+
+    View Admission Letter
+
+</a>
+
+{% else %}
+
+<a
+    href="{{ url_for('admissions.generate_letter',
+                     id=application.id) }}"
+    class="btn btn-primary">
+
+    Generate Admission Letter
+
+</a>
+
+{% endif %}
+</td>
+</tr>
+
+</table>
+
+</div>
+
+</div>
+<div class="card mt-4">
+
+    <div class="card-header bg-info text-white">
+
+        <h5 class="mb-0">
+            Application Review
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <form
+            method="POST"
+            action="{{ url_for('admissions.save_review', id=application.id) }}">
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Overall Review Notes
+                </label>
+
+                <textarea
+                    name="review_notes"
+                    rows="5"
+                    class="form-control"
+                >{{ application.review_notes or "" }}</textarea>
+
+            </div>
+
+            {% if application.reviewed_at %}
+
+            <div class="alert alert-light">
+
+                Last reviewed:
+
+                {{ application.reviewed_at }}
+
+            </div>
+
+            {% endif %}
+
+            <button
+                class="btn btn-primary">
+
+                Save Review
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+<div class="card mt-4">
+
+    <div class="card-header bg-dark text-white">
+
+        <h5 class="mb-0">
+            Application Timeline
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        {% for log in logs %}
+
+        <div class="border-start border-3 ps-3 mb-3">
+
+            <strong>{{ log.action }}</strong><br>
+
+            {{ log.description }}
+
+            <br>
+
+            <small class="text-muted">
+
+                {{ log.created_at }}
+
+            </small>
+
+        </div>
+
+        {% else %}
+
+        <div class="alert alert-info">
+
+            No activity recorded.
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+<div class="card mb-4">
+
+<div class="card-header bg-secondary text-white">
+
+Uploaded Documents
+
+</div>
+
+<div class="card-body">
+
+<table class="table table-bordered align-middle">
+
+    <thead class="table-light">
+
+        <tr>
+            <th>Document</th>
+            <th>Status</th>
+            <th style="width:35%">Review Comment</th>
+            <th>Actions</th>
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+    {% for doc in documents %}
+
+    <tr>
+
+        <td>
+            {{ doc.document_type }}
+        </td>
+
+        <td>
+
+            <form
+                method="POST"
+                action="{{ url_for('admissions.verify_document', id=doc.id) }}">
+
+                <select
+                    name="verification_status"
+                    class="form-select">
+
+                    <option
+                        value="Pending"
+                        {% if doc.verification_status=="Pending" %}selected{% endif %}>
+                        Pending
+                    </option>
+
+                    <option
+                        value="Verified"
+                        {% if doc.verification_status=="Verified" %}selected{% endif %}>
+                        Verified
+                    </option>
+
+                    <option
+                        value="Rejected"
+                        {% if doc.verification_status=="Rejected" %}selected{% endif %}>
+                        Rejected
+                    </option>
+
+                </select>
+
+        </td>
+
+        <td>
+
+                <textarea
+                    name="verification_comment"
+                    class="form-control"
+                    rows="2">{{ doc.verification_comment or "" }}</textarea>
+
+        </td>
+
+        <td>
+
+<button
+    type="button"
+    class="btn btn-primary btn-sm"
+    onclick="previewDocument(this)"
+    data-url="{{ url_for('document.preview_document', id=doc.id) }}"
+    data-ext="{{ doc.original_filename.rsplit('.', 1)[1]|lower }}">
+    View
+</button>
+
+            <button
+                type="submit"
+                class="btn btn-success btn-sm">
+
+                Save Review
+
+            </button>
+
+            </form>
+
+        </td>
+
+    </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="card mb-4">
+
+<div class="card-header bg-warning">
+
+Application Status
+
+</div>
+
+<div class="card-body">
+
+<form
+method="POST"
+action="{{ url_for('admissions.update_status', id=application.id) }}">
+
+<select
+name="status"
+class="form-select mb-3">
+
+{% for s in statuses %}
+
+<option
+value="{{ s }}"
+{% if s==application.status %}selected{% endif %}>
+
+{{ s }}
+
+</option>
+
+{% endfor %}
+
+</select>
+
+<button
+class="btn btn-primary">
+
+Update Status
+
+</button>
+
+</form>
+
+</div>
+
+</div>
+<div class="card">
+
+<div class="card-header">
+Timeline
+</div>
+
+<div class="card-body">
+
+<ul>
+
+<li>
+{{ application.created_at }}
+Application Submitted
+</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+<div
+class="modal fade"
+id="previewModal">
+<div
+class="modal-dialog modal-fullscreen">
+
+<div class="modal-content">
+
+<div class="modal-header bg-primary text-white">
+
+<h5>Document Review</h5>
+<button
+
+class="btn-close btn-close-white"
+
+data-bs-dismiss="modal">
+
+</button>
+
+</div>
+
+<div class="modal-body">
+
+<div id="previewContainer">
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<script>
+function previewDocument(button){
+
+    const url = button.dataset.url;
+    const ext = button.dataset.ext;
+
+    let html="";
+
+    if(["jpg","jpeg","png"].includes(ext)){
+
+        html = `<img
+                    src="${url}"
+                    class="img-fluid rounded shadow"
+                    style="max-height:700px;">`;
+
+    }else if(ext==="pdf"){
+
+        html = `<iframe
+                    src="${url}"
+                    width="100%"
+                    height="700"
+                    style="border:none;"></iframe>`;
+
+    }
+
+    document.getElementById(
+        "previewContainer"
+    ).innerHTML = html;
+
+    new bootstrap.Modal(
+        document.getElementById("previewModal")
+    ).show();
+
+}
+// function previewDocument(infoUrl){
+
+//     fetch(infoUrl)
+
+//     .then(response => response.json())
+
+//     .then(data => {
+
+//         let html = "";
+
+//         const ext = data.extension.toLowerCase();
+
+//         if(
+//             ext==="jpg" ||
+//             ext==="jpeg" ||
+//             ext==="png"
+//         ){
+
+//             html = `
+
+//             <img
+
+//             src="${data.url}"
+
+//             class="img-fluid rounded shadow"
+
+//             style="max-height:700px;">
+
+//             `;
+
+//         }
+
+//         else if(ext==="pdf"){
+
+//             html = `
+
+//             <iframe
+
+//             src="${data.url}"
+
+//             width="100%"
+
+//             height="700"
+
+//             style="border:none;">
+
+//             </iframe>
+
+//             `;
+
+//         }
+
+//         else{
+
+//             html = `
+
+//             <div class="alert alert-warning">
+
+//             Preview not available.
+
+//             <br><br>
+
+//             <a
+
+//             href="${data.url}"
+
+//             target="_blank"
+
+//             class="btn btn-primary">
+
+//             Open File
+
+//             </a>
+
+//             </div>
+
+//             `;
+
+//         }
+
+//         document.getElementById(
+//             "previewContainer"
+//         ).innerHTML = html;
+
+//         const modal = new bootstrap.Modal(
+
+//             document.getElementById(
+//                 "previewModal"
+//             )
+
+//         );
+
+//         modal.show();
+
+//     });
+
+// }
+
+</script>
+{% endblock %}

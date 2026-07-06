@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}
+Edit Department
+{% endblock %}
+
+{% block content %}
+
+<h2>Edit Department</h2>
+
+<form method="POST">
+
+<div class="mb-3">
+<label>Department Code</label>
+
+<input
+type="text"
+name="code"
+class="form-control"
+value="{{ department.code }}"
+required>
+
+</div>
+
+<div class="mb-3">
+
+<label>Department Name</label>
+
+<input
+type="text"
+name="name"
+class="form-control"
+value="{{ department.name }}"
+required>
+
+</div>
+
+<div class="mb-3">
+
+<label>Description</label>
+
+<textarea
+name="description"
+class="form-control">{{ department.description }}</textarea>
+
+</div>
+
+<button class="btn btn-success">
+
+Update Department
+
+</button>
+
+<a href="{{ url_for('department.list_departments') }}"
+class="btn btn-secondary">
+
+Cancel
+
+</a>
+
+</form>
+
+{% endblock %}

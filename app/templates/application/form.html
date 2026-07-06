@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+Application
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<h2>University Application</h2>
+{% if application %}
+
+<div class="alert alert-success">
+
+    <h4>Application Submitted</h4>
+
+    <p>
+
+        Status:
+        <strong>{{ application.status }}</strong>
+
+    </p>
+
+</div>
+
+<a
+class="btn btn-primary"
+href="{{ url_for('applicant.dashboard') }}">
+
+Back to Dashboard
+
+</a>
+
+{% else %}
+<form method="POST">
+
+<div class="mb-3">
+    <label class="form-label">Department</label>
+    <select
+    id="department"
+    name="department"
+    class="form-select"
+    required>
+
+    <option value="">Select Department</option>
+
+    {% for department in departments %}
+        <option value="{{ department.id }}">
+            {{ department.name }}
+        </option>
+    {% endfor %}
+
+</select>
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Course</label>
+
+    <select
+        id="course"
+        name="course"
+        class="form-select"
+        required>
+
+        <option value="">Select Course</option>
+
+    </select>
+</div>
+
+<button class="btn btn-success">
+
+Save Application
+
+</button>
+
+</form>
+{% endif %}
+</div>
+<script>
+
+const department=document.getElementById("department");
+
+const course=document.getElementById("course");
+
+department.addEventListener("change",function(){
+
+fetch("/api/courses/"+this.value)
+
+.then(response=>response.json())
+
+.then(data=>{
+
+course.innerHTML="";
+
+data.forEach(function(item){
+
+course.innerHTML+=`
+<option value="${item.id}">
+${item.name}
+</option>
+`;
+
+});
+
+});
+
+});
+
+
+console.log("JavaScript loaded");
+
+const departmented = document.getElementById("department");
+
+departmented.addEventListener("change", function () {
+
+    console.log("Department changed:", this.value);
+
+});
+
+</script>
+
+{% endblock %}

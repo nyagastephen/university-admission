@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}View Profile{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<h2>Applicant Profile</h2>
+
+<table class="table table-bordered">
+
+<tr>
+<th>Username</th>
+<td>{{ current_user.username }}</td>
+</tr>
+
+<tr>
+<th>Email</th>
+<td>{{ current_user.email }}</td>
+</tr>
+
+<tr>
+<th>Full Name</th>
+<td>
+
+{{ profile.first_name }}
+
+{{ profile.middle_name }}
+
+{{ profile.last_name }}
+
+</td>
+</tr>
+
+<tr>
+<th>Gender</th>
+<td>{{ profile.gender }}</td>
+</tr>
+
+<tr>
+<th>Phone</th>
+<td>{{ profile.phone }}</td>
+</tr>
+
+<tr>
+<th>Nationality</th>
+<td>{{ profile.nationality }}</td>
+</tr>
+
+<tr>
+<th>County</th>
+<td>{{ profile.county }}</td>
+</tr>
+
+<tr>
+<th>Town</th>
+<td>{{ profile.city }}</td>
+</tr>
+
+<tr>
+<th>Postal Address</th>
+<td>{{ profile.postal_address }}</td>
+</tr>
+<tr>
+    <th>Date of Birth</th>
+    <td>{{ profile.date_of_birth }}</td>
+</tr>
+
+<tr>
+    <th>National ID</th>
+    <td>{{ profile.national_id }}</td>
+</tr>
+
+</table>
+
+<a
+href="{{ url_for('applicant.profile') }}"
+class="btn btn-warning">
+
+Edit Profile
+
+</a>
+
+</div>
+
+{% endblock %}

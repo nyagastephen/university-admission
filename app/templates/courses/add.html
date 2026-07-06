@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Add Course</h2>
+
+<form method="POST">
+
+<div class="mb-3">
+
+<label>Course Code</label>
+
+<input
+type="text"
+name="code"
+class="form-control"
+required>
+
+</div>
+
+<div class="mb-3">
+
+<label>Course Name</label>
+
+<input
+type="text"
+name="name"
+class="form-control"
+required>
+
+</div>
+
+<div class="mb-3">
+
+<label>Duration (Years)</label>
+
+<input
+type="number"
+name="duration"
+class="form-control"
+required>
+
+</div>
+
+<div class="mb-3">
+
+<label>Capacity</label>
+
+<input
+type="number"
+name="capacity"
+class="form-control"
+required>
+
+</div>
+
+<div class="mb-3">
+
+<label>Department</label>
+
+<select
+name="department_id"
+class="form-select"
+required>
+
+{% for department in departments %}
+
+<option value="{{ department.id }}">
+
+{{ department.name }}
+
+</option>
+
+{% endfor %}
+
+</select>
+
+</div>
+
+<button class="btn btn-success">
+
+Save Course
+
+</button>
+
+</form>
+
+{% endblock %}

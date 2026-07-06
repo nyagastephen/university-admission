@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+Education History
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<h2>KCSE Education History</h2>
+
+<form method="POST">
+
+<div class="mb-3">
+
+<label>
+
+School Name
+
+</label>
+
+<input
+class="form-control"
+name="school_name"
+value="{{ education.school_name if education else '' }}"
+required>
+
+</div>
+
+<div class="mb-3">
+
+<label>
+
+KCSE Index Number
+
+</label>
+
+<input
+class="form-control"
+name="index_number"
+value="{{ education.index_number if education else '' }}"
+required>
+
+</div>
+
+<div class="mb-3">
+
+<label>
+
+Examination Year
+
+</label>
+
+<input
+type="number"
+name="exam_year"
+min="1990"
+max="{{ current_year }}"
+class="form-control"
+value="{{ education.exam_year if education else '' }}"
+required>
+
+</div>
+
+<div class="mb-3">
+
+<label>
+
+Mean Grade
+
+</label>
+
+<select
+name="mean_grade"
+class="form-select"
+required>
+
+<option value="">
+
+Select Grade
+
+</option>
+
+{% for grade in grades %}
+
+<option
+value="{{ grade }}"
+{% if education and education.mean_grade == grade %}
+selected
+{% endif %}>
+
+{{ grade }}
+
+</option>
+
+{% endfor %}
+
+</select>
+
+</div>
+
+<div class="mb-3">
+
+<label>
+
+Certificate Number
+
+</label>
+
+<input
+class="form-control"
+name="certificate_number"
+value="{{ education.certificate_number if education else '' }}">
+
+</div>
+
+<button
+class="btn btn-success">
+
+Save Education History
+
+</button>
+
+</form>
+
+</div>
+
+{% endblock %}

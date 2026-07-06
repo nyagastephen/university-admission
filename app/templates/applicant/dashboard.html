@@ -1,0 +1,266 @@
+{% extends "base.html" %}
+
+{% block title %}Applicant Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="mt-4">
+
+    <a href="{{ url_for('applicant.profile') }}"
+       class="btn btn-primary">
+        My Profile
+    </a>
+
+    <a href="{{ url_for('education.education_form') }}"
+       class="btn btn-info">
+        Education History
+    </a>
+
+    <a href="{{ url_for('document.list_documents') }}"
+   class="btn btn-secondary">
+    Upload Documents
+</a>
+
+    <a href="{{ url_for('application.application_form') }}"
+       class="btn btn-success">
+        Submit Application
+    </a>
+    <div class="card mt-4">
+
+    <div class="card-header bg-success text-white">
+
+        <h5>Admission Letter</h5>
+
+    </div>
+
+    <div class="card-body">
+
+        {% if letter %}
+
+            <p>
+
+                Your admission letter is ready.
+
+            </p>
+
+            <a
+                href="{{ url_for('applicant.download_letter') }}"
+                class="btn btn-success">
+
+                Download Admission Letter
+
+            </a>
+
+        {% else %}
+
+            <div class="alert alert-info">
+
+                Your admission letter is not yet available.
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</div>
+<div class="container mt-4">
+
+    <h2>Applicant Dashboard</h2>
+
+    <hr>
+
+    <h4>
+        Welcome,
+        {% if profile %}
+            {{ profile.first_name }} {{ profile.last_name }}
+        {% else %}
+            {{ current_user.username }}
+        {% endif %}
+    </h4>
+
+    <p class="text-muted">
+        Complete all the steps below before submitting your application.
+    </p>
+
+    <div class="row mt-4">
+
+        <div class="col-md-3">
+
+            <div class="card text-center">
+
+                <div class="card-body">
+
+                    <h5>Profile</h5>
+
+                    {% if profile_complete %}
+                        <span class="badge bg-success">Completed</span>
+                    {% else %}
+                        <span class="badge bg-warning">Pending</span>
+                    {% endif %}
+
+                    <br><br>
+
+                    <a href="{{ url_for('applicant.profile') }}"
+                       class="btn btn-primary btn-sm">
+
+                        {% if profile_complete %}
+                            Edit Profile
+                        {% else %}
+                            Complete Profile
+                        {% endif %}
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card text-center">
+
+                <div class="card-body">
+
+                    <h5>Education</h5>
+
+                   {% if education_complete %}
+    <span class="badge bg-success">Completed</span>
+{% else %}
+    <span class="badge bg-warning">Pending</span>
+{% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card text-center">
+
+                <div class="card-body">
+
+                    <h5>Documents</h5>
+
+                    {% if documents_complete %}
+    <span class="badge bg-success">Completed</span>
+{% else %}
+    <span class="badge bg-warning">Pending</span>
+{% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card text-center">
+
+                <div class="card-body">
+
+                    <h5>Application</h5>
+
+                   <div class="card mt-4">
+
+    <div class="card-header bg-primary text-white">
+        Admission Progress
+    </div>
+
+    <div class="card-body">
+
+        <table class="table">
+
+            <tr>
+                <td>Account Created</td>
+                <td><span class="badge bg-success">✔ Completed</span></td>
+            </tr>
+
+            <tr>
+                <td>Applicant Profile</td>
+
+                <td>
+
+                    {% if profile_complete %}
+                        <span class="badge bg-success">✔ Completed</span>
+                    {% else %}
+                        <span class="badge bg-warning">Pending</span>
+                    {% endif %}
+
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td>Education History</td>
+
+                <td>
+
+                 {% if education_complete %}
+    <span class="badge bg-success">✔ Completed</span>
+{% else %}
+    <span class="badge bg-warning">Pending</span>
+{% endif %}
+
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td>Documents Uploaded</td>
+
+                <td>
+                    {% if documents_complete %}
+     <span class="badge bg-success"> ✔Completed</span>
+     {% else %}
+    <span class="badge bg-warning">Pending</span>
+{% endif %}
+
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td>Application Submitted</td>
+
+                <td>
+
+                    {% if application %}
+                        <span class="badge bg-success">✔
+                            {{ application.status }}
+                        </span>
+                    {% else %}
+                        <span class="badge bg-warning">Draft</span>
+                    {% endif %}
+
+                </td>
+
+            </tr>
+
+        </table>
+
+    </div>
+
+</div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,289 @@
+{% extends "base.html" %}
+
+{% block title %}
+Applications
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<h2>Applications</h2>
+
+<hr>
+<form method="GET">
+
+<div class="row">
+
+<div class="col-md-3">
+
+<input
+type="text"
+name="search"
+class="form-control"
+placeholder="Applicant or APP Number"
+value="{{ search }}">
+
+</div>
+
+<div class="col-md-2">
+
+<select
+name="department"
+class="form-select">
+
+<option value="">
+All Departments
+</option>
+
+{% for dept in departments %}
+
+<option
+value="{{ dept.id }}"
+{% if department==dept.id %}selected{% endif %}>
+
+{{ dept.name }}
+
+</option>
+
+{% endfor %}
+
+</select>
+
+</div>
+
+<div class="col-md-2">
+
+<select
+name="course"
+class="form-select">
+
+<option value="">
+All Courses
+</option>
+
+{% for c in courses %}
+
+<option
+value="{{ c.id }}"
+{% if course==c.id %}selected{% endif %}>
+
+{{ c.name }}
+
+</option>
+
+{% endfor %}
+
+</select>
+
+</div>
+
+<div class="col-md-2">
+
+<select
+name="status"
+class="form-select">
+
+<option value="">
+All Status
+</option>
+
+{% for s in statuses %}
+
+<option
+value="{{ s }}"
+{% if status==s %}selected{% endif %}>
+
+{{ s }}
+
+</option>
+
+{% endfor %}
+
+</select>
+
+</div>
+
+<div class="col-md-2">
+
+<button
+class="btn btn-primary w-100">
+
+Search
+
+</button>
+
+</div>
+
+</div>
+
+</form>
+
+<table class="table table-bordered table-hover mt-4">
+
+<thead>
+
+<tr>
+
+<th>Application No</th>
+
+<th>Applicant</th>
+
+<th>Department</th>
+
+<th>Course</th>
+
+<th>Status</th>
+
+<th>Date</th>
+
+<th></th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for app in applications.items %}
+
+<tr>
+
+<td>
+
+{{ app.application_number }}
+
+</td>
+
+<td>
+
+{{ app.applicant.first_name }}
+
+{{ app.applicant.last_name }}
+
+</td>
+
+<td>
+
+{{ app.department.name }}
+
+</td>
+
+<td>
+
+{{ app.course.name }}
+
+</td>
+
+<td>
+
+<span class="badge bg-primary">
+
+{{ app.status }}
+
+</span>
+
+</td>
+
+<td>
+
+{{ app.created_at.strftime("%d-%m-%Y") }}
+
+</td>
+
+<td>
+
+<a
+
+href="{{ url_for('admissions.view_application',id=app.id) }}"
+
+class="btn btn-success btn-sm">
+
+View
+
+</a>
+
+</td>
+
+</tr>
+
+{% else %}
+
+<tr>
+
+<td colspan="7">
+
+No applications found.
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+<nav>
+
+<ul class="pagination">
+
+{% if applications.has_prev %}
+
+<li class="page-item">
+
+<a
+class="page-link"
+href="{{ url_for('admissions.applications',page=applications.prev_num,search=search,department=department,course=course,status=status) }}">
+
+Previous
+
+</a>
+
+</li>
+
+{% endif %}
+
+{% for p in applications.iter_pages() %}
+
+{% if p %}
+
+<li class="page-item {% if p==applications.page %}active{% endif %}">
+
+<a
+class="page-link"
+href="{{ url_for('admissions.applications',page=p,search=search,department=department,course=course,status=status) }}">
+
+{{ p }}
+
+</a>
+
+</li>
+
+{% endif %}
+
+{% endfor %}
+
+{% if applications.has_next %}
+
+<li class="page-item">
+
+<a
+class="page-link"
+href="{{ url_for('admissions.applications',page=applications.next_num,search=search,department=department,course=course,status=status) }}">
+
+Next
+
+</a>
+
+</li>
+
+{% endif %}
+
+</ul>
+
+</nav>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+
+{% block title %}
+Departments
+{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between mb-3">
+
+    <h2>Departments</h2>
+
+    <a href="{{ url_for('department.add_department') }}"
+       class="btn btn-primary">
+
+        Add Department
+
+    </a>
+
+</div>
+<form method="GET" class="mb-3">
+
+<div class="input-group">
+
+<input
+type="text"
+name="q"
+value="{{ query }}"
+placeholder="Search department..."
+class="form-control">
+
+<button class="btn btn-primary">
+
+Search
+
+</button>
+
+</div>
+
+</form>
+{% if departments.items %}
+<table class="table table-bordered">
+
+<thead>
+
+<tr>
+
+<th>ID</th>
+
+<th>Code</th>
+
+<th>Name</th>
+
+<th>Status</th>
+
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for department in departments.items %}
+
+<tr>
+
+<td>{{ department.id }}</td>
+
+<td>{{ department.code }}</td>
+
+<td>{{ department.name }}</td>
+
+<td>
+
+{% if department.is_active %}
+
+<span class="badge bg-success">
+
+Active
+
+</span>
+
+{% else %}
+
+<span class="badge bg-secondary">
+
+Inactive
+
+</span>
+
+{% endif %}
+
+</td>
+
+
+<td>
+
+<a
+class="btn btn-warning btn-sm"
+href="{{ url_for('department.edit_department', id=department.id) }}">
+
+Edit
+
+</a>
+
+{% if department.is_active %}
+
+
+<a href="{{ url_for('department.deactivate_department', id=department.id) }}"
+class="btn btn-danger btn-sm"
+onclick="return confirm('Deactivate this department?')">
+
+Deactivate
+
+</a>
+{% else %}
+
+<a class="btn btn-success btn-sm"
+href="{{ url_for('department.activate_department', id=department.id) }}">
+Activate
+</a>
+
+{% endif %}
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+{% else %}
+
+<div class="alert alert-info">
+    No departments have been created yet.
+</div>
+
+{% endif %}
+
+{% endblock %}
+<nav class="mt-3">
+    <ul class="pagination">
+
+        {% if departments.has_prev %}
+        <li class="page-item">
+            <a class="page-link"
+               href="{{ url_for('department.list_departments',
+                                page=departments.prev_num,
+                                q=query) }}">
+                Previous
+            </a>
+        </li>
+        {% endif %}
+
+        <li class="page-item disabled">
+            <span class="page-link">
+                Page {{ departments.page }} of {{ departments.pages }}
+            </span>
+        </li>
+
+        {% if departments.has_next %}
+        <li class="page-item">
+            <a class="page-link"
+               href="{{ url_for('department.list_departments',
+                                page=departments.next_num,
+                                q=query) }}">
+                Next
+            </a>
+        </li>
+        {% endif %}
+
+    </ul>
+</nav>

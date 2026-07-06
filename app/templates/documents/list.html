@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+
+{% block title %}
+My Documents
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+
+    <div>
+
+        <h2>Required Documents</h2>
+
+        <p class="text-muted mb-0">
+            Upload all required admission documents before submitting your application.
+        </p>
+
+    </div>
+
+    <div>
+
+        <span class="badge bg-primary fs-6">
+            {{ uploaded_count }} / {{ required_count }} Uploaded
+        </span>
+
+    </div>
+
+</div>
+
+{% if documents_complete %}
+
+    <div class="alert alert-success">
+
+        <strong>Congratulations!</strong>
+
+        All required documents have been uploaded.
+
+    </div>
+
+{% else %}
+
+    <div class="alert alert-warning">
+
+        Please upload all required documents before submitting your application.
+
+    </div>
+
+{% endif %}
+
+<div class="progress mb-4" style="height:25px;">
+
+    <div
+        class="progress-bar progress-bar-striped progress-bar-animated"
+        role="progressbar"
+        style="width: {{ (uploaded_count / required_count * 100)|round(0) }}%;">
+
+        {{ uploaded_count }}/{{ required_count }}
+
+    </div>
+
+</div>
+
+<div class="card shadow-sm">
+
+    <div class="card-header bg-primary text-white">
+
+        Required Documents
+
+    </div>
+
+    <div class="table-responsive">
+
+        <table class="table table-bordered table-hover align-middle mb-0">
+
+            <thead class="table-light">
+
+                <tr>
+
+                    <th width="45%">Document</th>
+
+                    <th width="20%">Status</th>
+
+                    <th width="35%">Action</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for doc in document_types %}
+
+                {% if doc in uploaded %}
+
+                    <tr>
+
+                        <td>{{ doc }}</td>
+
+                        <td>
+
+                            <span class="badge bg-success">
+
+                                Uploaded
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <a
+                                href="{{ url_for('document.upload_document', document_type=doc) }}"
+                                class="btn btn-warning btn-sm">
+
+                                Replace
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                {% else %}
+
+                    <tr>
+
+                        <td>{{ doc }}</td>
+
+                        <td>
+
+                            <span class="badge bg-danger">
+
+                                Missing
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <a
+                                href="{{ url_for('document.upload_document', document_type=doc) }}"
+                                class="btn btn-primary btn-sm">
+
+                                Upload
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                {% endif %}
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<div class="mt-4 text-end">
+
+    {% if documents_complete %}
+
+        <a
+            href="{{ url_for('application.application_form') }}"
+            class="btn btn-success">
+
+            Continue to Application
+
+        </a>
+
+    {% else %}
+
+        <button
+            class="btn btn-secondary"
+            disabled>
+
+            Complete Document Upload First
+
+        </button>
+
+    {% endif %}
+
+</div>
+
+</div>
+
+{% endblock %}

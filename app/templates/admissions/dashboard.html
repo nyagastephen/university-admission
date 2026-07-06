@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block title %}Admissions Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<h2>Admissions Dashboard</h2>
+
+<hr>
+
+<div class="row">
+
+<div class="col-md-2">
+<div class="card text-center">
+<div class="card-body">
+<h5>Total</h5>
+<h3>{{ total }}</h3>
+</div>
+</div>
+</div>
+
+<div class="col-md-2">
+<div class="card text-center border-primary">
+<div class="card-body">
+<h5>Submitted</h5>
+<h3>{{ submitted }}</h3>
+</div>
+</div>
+</div>
+
+<div class="col-md-2">
+<div class="card text-center border-warning">
+<div class="card-body">
+<h5>Review</h5>
+<h3>{{ under_review }}</h3>
+</div>
+</div>
+</div>
+
+<div class="col-md-2">
+<div class="card text-center border-info">
+<div class="card-body">
+<h5>Shortlisted</h5>
+<h3>{{ shortlisted }}</h3>
+</div>
+</div>
+</div>
+
+<div class="col-md-2">
+<div class="card text-center border-success">
+<div class="card-body">
+<h5>Accepted</h5>
+<h3>{{ accepted }}</h3>
+</div>
+</div>
+</div>
+
+<div class="col-md-2">
+<div class="card text-center border-danger">
+<div class="card-body">
+<h5>Rejected</h5>
+<h3>{{ rejected }}</h3>
+</div>
+</div>
+</div>
+
+</div>
+
+<hr>
+
+<h4>Recent Applications</h4>
+
+<table class="table table-striped">
+
+<thead>
+
+<tr>
+
+
+<th>Application Number</th>
+<th>Applicant</th>
+
+<th>Department</th>
+
+<th>Course</th>
+
+<th>Status</th>
+
+<th>Date</th>
+
+<th></th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for app in recent %}
+
+<tr>
+
+
+<td>{{ app.application_number }}</td>
+<td>
+
+{{ app.applicant.first_name }}
+
+{{ app.applicant.last_name }}
+
+</td>
+
+<td>{{ app.department.name }}</td>
+
+<td>{{ app.course.name }}</td>
+
+<td>
+
+<span class="badge bg-primary">
+
+{{ app.status }}
+
+</span>
+
+</td>
+
+<td>
+
+{{ app.created_at.strftime("%d-%m-%Y") }}
+
+</td>
+
+<td>
+
+<a
+href="#"
+class="btn btn-sm btn-success">
+
+View
+
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+{% endblock %}

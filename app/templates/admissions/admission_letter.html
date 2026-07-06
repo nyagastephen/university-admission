@@ -1,0 +1,542 @@
+<!-- <!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+
+<style>
+
+body{
+
+    font-family:Arial,sans-serif;
+    margin:40px;
+    line-height:1.8;
+
+}
+
+.header{
+
+    text-align:center;
+
+}
+
+.logo{
+
+    width:90px;
+
+}
+
+.title{
+
+    font-size:24px;
+    font-weight:bold;
+
+}
+
+.ref{
+
+    margin-top:20px;
+
+}
+
+.footer{
+
+    margin-top:60px;
+
+}
+
+.signature{
+
+    margin-top:70px;
+
+}
+
+table{
+
+    width:100%;
+
+}
+
+td{
+
+    padding:6px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<img
+src="{{ logo_path }}"
+class="logo">
+
+<div class="title">
+
+YOUR UNIVERSITY NAME
+
+</div>
+
+Admission Letter
+
+</div>
+
+<div class="ref">
+
+Reference:
+{{ letter.letter_number }}
+
+<br>
+
+Date:
+
+{{ letter.generated_at.strftime("%d %B %Y") }}
+
+</div>
+
+<br>
+
+Dear
+
+<strong>
+
+{{ application.applicant.first_name }}
+{{ application.applicant.last_name }}
+
+</strong>
+
+<p>
+
+Congratulations.
+
+You have been offered admission to pursue
+
+<strong>
+
+{{ application.course.name }}
+
+</strong>
+
+in the
+
+<strong>
+
+{{ application.department.name }}
+
+</strong>.
+
+</p>
+
+<table>
+
+<tr>
+
+<td width="35%">
+
+Application Number
+
+</td>
+
+<td>
+
+{{ application.application_number }}
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+Department
+
+</td>
+
+<td>
+
+{{ application.department.name }}
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+Course
+
+</td>
+
+<td>
+
+{{ application.course.name }}
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+Reporting Date
+
+</td>
+
+<td>
+
+1 September 2026
+
+</td>
+
+</tr>
+
+</table>
+
+<div class="signature">
+
+_________________________
+
+<br>
+
+Registrar (Academic Affairs)
+
+</div>
+
+<div class="footer">
+
+This is a computer-generated admission letter.
+
+</div>
+
+</body>
+
+</html> -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Admission Letter</title>
+
+<style>
+
+@page{
+    size:A4;
+    margin:25mm 20mm;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    color:#222;
+    font-size:14px;
+    line-height:1.6;
+}
+
+.header{
+    text-align:center;
+    border-bottom:3px solid #0d6efd;
+    padding-bottom:15px;
+    margin-bottom:30px;
+}
+
+.logo{
+    width:90px;
+    margin-bottom:10px;
+}
+
+.university{
+    font-size:28px;
+    font-weight:bold;
+    color:#0d6efd;
+}
+
+.address{
+    font-size:13px;
+    color:#666;
+}
+
+.title{
+    margin:35px 0 25px;
+    text-align:center;
+    font-size:22px;
+    font-weight:bold;
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
+
+.details{
+    width:100%;
+    border-collapse:collapse;
+    margin-bottom:25px;
+}
+
+.details td{
+    padding:6px 0;
+    vertical-align:top;
+}
+
+.label{
+    width:180px;
+    font-weight:bold;
+}
+
+.notice{
+    background:#f8f9fa;
+    border-left:5px solid #198754;
+    padding:15px;
+    margin:25px 0;
+}
+
+.instructions{
+    margin-top:20px;
+}
+
+.instructions li{
+    margin-bottom:8px;
+}
+
+.signature{
+    margin-top:70px;
+}
+
+.footer{
+    margin-top:60px;
+    border-top:1px solid #ccc;
+    padding-top:12px;
+    font-size:11px;
+    color:#666;
+    text-align:center;
+}
+
+.reference{
+    float:right;
+    text-align:right;
+    margin-bottom:20px;
+}
+
+.clear{
+    clear:both;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+    <img src="{{ logo_path }}" class="logo">
+
+    <div class="university">
+
+        KAYCOL UNIVERSITY
+
+    </div>
+
+    <div class="address">
+
+        P.O. Box XXXX-00100 Nairobi, Kenya<br>
+
+        Tel: +254 XXX XXX XXX<br>
+
+        Email: admissions@kaycol.ac.ke<br>
+
+        www.kaycol.ac.ke
+
+    </div>
+
+</div>
+
+<div class="reference">
+
+<strong>Reference:</strong><br>
+
+{{ letter.letter_number }}<br><br>
+
+<strong>Date:</strong><br>
+
+{{ letter.generated_at.strftime("%d %B %Y") }}
+
+</div>
+
+<div class="clear"></div>
+
+<div class="title">
+
+LETTER OF ADMISSION
+
+</div>
+
+<p>
+
+Dear <strong>
+
+{{ application.applicant.first_name }}
+
+{{ application.applicant.last_name }}
+
+</strong>,
+
+</p>
+
+<p>
+
+Congratulations.
+
+Following the review of your application, we are pleased to inform you that you have been offered admission to study at <strong>Kaycol University</strong>.
+
+</p>
+
+<table class="details">
+
+<tr>
+
+<td class="label">
+
+Application Number
+
+</td>
+
+<td>
+
+{{ application.application_number }}
+
+</td>
+
+</tr>
+
+<tr>
+
+<td class="label">
+
+Programme
+
+</td>
+
+<td>
+
+{{ application.course.name }}
+
+</td>
+
+</tr>
+
+<tr>
+
+<td class="label">
+
+Department
+
+</td>
+
+<td>
+
+{{ application.department.name }}
+
+</td>
+
+</tr>
+
+<tr>
+
+<td class="label">
+
+Admission Status
+
+</td>
+
+<td>
+
+{{ application.status }}
+
+</td>
+
+</tr>
+
+<tr>
+
+<td class="label">
+
+Reporting Date
+
+</td>
+
+<td>
+
+01 September 2026
+
+</td>
+
+</tr>
+
+</table>
+
+<div class="notice">
+
+Please report to the Admissions Office on the reporting date with all original documents for verification before registration.
+
+</div>
+
+<h3>
+
+Documents to Bring
+
+</h3>
+
+<ul class="instructions">
+
+<li>Original KCSE Certificate</li>
+
+<li>Original National ID / Birth Certificate</li>
+
+<li>Passport-size photographs</li>
+
+<li>This Admission Letter</li>
+
+<li>Any other required supporting documents</li>
+
+</ul>
+
+<p>
+
+We congratulate you on your successful application and look forward to welcoming you to Kaycol University. We wish you every success in your academic journey.
+
+</p>
+
+<div class="signature">
+
+Yours faithfully,
+
+<br><br><br>
+
+<strong>
+
+REGISTRAR (ACADEMIC AFFAIRS)
+
+</strong>
+
+</div>
+
+<div class="footer">
+
+This letter was electronically generated by the University Admissions System.<br>
+
+Reference Number: {{ letter.letter_number }}
+
+</div>
+
+</body>
+
+</html>

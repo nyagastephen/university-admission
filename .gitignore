@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+venv/
+.env
+
+# Flask
+instance/
+
+# VS Code
+.vscode/
+
+# PyCharm
+.idea/
+
+# Python caches
+.pytest_cache/
+.mypy_cache/
+
+# Logs
+*.log
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Uploads (optional)
+app/static/uploads/
+
+# Generated PDFs (optional)
+app/static/admission_letters/
+
+# Environment variables
+.env

@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Courses</h2>
+
+<a
+href="{{ url_for('course.add_course') }}"
+class="btn btn-primary mb-3">
+
+Add Course
+
+</a>
+
+<table class="table table-bordered">
+
+<thead>
+
+<tr>
+
+<th>Code</th>
+
+<th>Course</th>
+
+<th>Department</th>
+
+<th>Duration</th>
+
+<th>Capacity</th>
+<th>Status</th>
+<th>Update</th>
+<th>Edit</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for course in courses.items %}
+
+<tr>
+
+<td>{{ course.code }}</td>
+
+<td>{{ course.name }}</td>
+
+<td>{{ course.department.name }}</td>
+
+<td>{{ course.duration }} Years</td>
+
+<td>{{ course.capacity }}</td>
+<td>
+
+{% if course.is_active %}
+
+<span class="badge bg-success">
+
+Active
+
+</span>
+
+{% else %}
+
+<span class="badge bg-secondary">
+
+Inactive
+
+</span>
+
+{% endif %}
+
+</td>
+
+<td>
+{% if course.is_active %}
+
+<a
+href="{{ url_for('course.deactivate_course', id=course.id) }}"
+class="btn btn-danger btn-sm"
+onclick="return confirm('Deactivate this course?');">
+
+Deactivate
+
+</a>
+
+{% else %}
+
+<a
+href="{{ url_for('course.activate_course', id=course.id) }}"
+class="btn btn-success btn-sm">
+
+Activate
+
+</a>
+
+{% endif %}
+
+</td>
+<td>
+
+<a
+href="{{ url_for('course.edit_course', id=course.id) }}"
+class="btn btn-warning btn-sm">
+
+Edit
+
+</a>
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+{% endblock %}

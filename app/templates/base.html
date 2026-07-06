@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}University Admission Portal{% endblock %}</title>
+
+</head>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+
+<div class="container">
+
+<a class="navbar-brand" href="/">Admissions</a>
+
+<button class="navbar-toggler"
+type="button"
+data-bs-toggle="collapse"
+data-bs-target="#menu">
+
+<span class="navbar-toggler-icon"></span>
+
+</button>
+
+<div class="collapse navbar-collapse" id="menu">
+
+<ul class="navbar-nav ms-auto">
+    <li class="nav-item">
+
+<a class="nav-link" href="/">Home</a>
+
+</li>
+
+<li class="nav-item">
+
+<a class="nav-link" href="/about">About</a>
+
+</li>
+{% if current_user.is_authenticated  %}
+{% if current_user.role == "Applicant" %}
+
+<li class="nav-item">
+    <a class="nav-link"
+       href="{{ url_for('applicant.dashboard') }}">
+        Dashboard
+    </a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link"
+       href="{{ url_for('applicant.profile') }}">
+        My Profile
+    </a>
+</li>
+
+<li class="nav-item">
+    <span class="navbar-text me-3">
+        Welcome, {{ current_user.username }}
+    </span>
+    <span class="navbar-text">
+    Role: {{ current_user.role }}
+</span>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link" href="{{ url_for('auth.logout') }}">
+        Logout
+    </a>
+</li>
+
+
+
+
+
+{% elif current_user.role == "Admin" %}
+<li class="nav-item">
+    <a class="nav-link" href="/dashboard">Dashboard</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="{{ url_for('department.list_departments') }}">
+        Departments
+    </a>
+</li>
+<li class="nav-item">
+    <a class="nav-link"
+       href="{{ url_for('course.list_courses') }}">
+        Courses
+    </a>
+</li>
+<li class="nav-item">
+    <a class="nav-link"
+       href="{{ url_for('admissions.dashboard') }}">
+        Admissions Dashboard
+    </a>
+</li>
+<li class="nav-item">
+    <span class="navbar-text me-3">
+        Welcome, {{ current_user.username }}
+    </span>
+    <span class="navbar-text">
+    Role: {{ current_user.role }}
+</span>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link" href="{{ url_for('auth.logout') }}">
+        Logout
+    </a>
+</li>
+{% elif current_user.role == "Admissions Officer" %}
+  <li class="nav-item">
+        <a class="nav-link"
+           href="{{ url_for('admissions.dashboard') }}">
+            Admissions Dashboard
+        </a>
+    </li>
+        <li class="nav-item">
+    <a class="nav-link"
+       href="{{ url_for('admissions.applications') }}">
+        Applications
+    </a>
+</li>
+<li class="nav-item">
+    <span class="navbar-text me-3">
+        Welcome, {{ current_user.username }}
+    </span>
+    <span class="navbar-text">
+    Role: {{ current_user.role }}
+</span>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link" href="{{ url_for('auth.logout') }}">
+        Logout
+    </a>
+</li>
+{% endif %}
+{% else  %}
+<li class="nav-item">
+    <a class="nav-link" href="{{ url_for('auth.login') }}">
+        Login
+    </a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link" href="{{ url_for('auth.register') }}">
+        Register
+    </a>
+</li>
+{% endif %}
+
+
+
+</ul>
+
+</div>
+
+</div>
+
+</nav>
+<div class="container mt-3">
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+
+{% if messages %}
+
+{% for category, message in messages %}
+
+<div class="alert alert-{{ category }} alert-dismissible fade show">
+
+{{ message }}
+
+<button
+type="button"
+class="btn-close"
+data-bs-dismiss="alert">
+</button>
+
+</div>
+
+{% endfor %}
+
+{% endif %}
+
+{% endwith %}
+
+</div>
+<div class="container mt-4">
+<h2>University Admission Portal</h2>
+
+<hr>
+
+{% block content %}
+
+{% endblock %}
+</div>
+<script>
+const department = document.getElementById("department");
+const course = document.getElementById("course");
+
+if (department && course) {
+
+    department.addEventListener("change", function () {
+
+        course.innerHTML = '<option value="">Loading...</option>';
+
+        fetch("/api/courses/" + this.value)
+            .then(response => response.json())
+            .then(data => {
+
+                course.innerHTML = '<option value="">Select Course</option>';
+
+                data.forEach(function(item) {
+
+                    course.innerHTML += `
+                        <option value="${item.id}">
+                            ${item.name}
+                        </option>
+                    `;
+
+                });
+
+            });
+
+    });
+
+}
+</script>
+</body>
+
+</html>
